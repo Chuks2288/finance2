@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site";
 import { Toaster } from "sonner";
 
 import { QueryProvider } from "@/providers/query-provider";
+import { SheetProvider } from "@/providers/sheet-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <QueryProvider>
+          <SheetProvider />
           <Toaster />
           {children}
         </QueryProvider>

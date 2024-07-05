@@ -20,3 +20,15 @@ export const LoginSchema = z.object({
         message: "Password is required",
     })
 });
+
+export const NewAccountSchema = z.object({
+    name: z.string().min(1, {
+        message: "Account Name is required",
+    }),
+});
+
+export const EditAccountSchema = z.object({
+    name: z.string().min(1, {
+        message: "Account Name is required",
+    }),
+});

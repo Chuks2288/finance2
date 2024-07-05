@@ -5,7 +5,7 @@ export const Logo = () => {
     return (
         <Link
             href="/"
-            className="flex items-center gap-x-2 cursor-pointer"
+            className="hidden lg:flex items-center gap-x-2 cursor-pointer"
         >
             <Image
                 src="/logo.svg"

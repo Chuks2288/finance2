@@ -19,9 +19,11 @@ export const NavButton = ({
     return (
         <Button
             key={label}
+            size="sm"
+            variant="outline"
             className={cn(
-                "text-white hover:bg-slate-300/30",
-                isActive && "bg-gray-300/30"
+                "w-full lg:w-auto justify-between font-normal bg-transparent hover:bg-white/20 hover:text-white border-none focus-visible:ring-offset-0 focus-visible:ring-transparent outline-none text-white focus:bg-white/30 transition",
+                isActive && "bg-white/10 text-white",
             )}
             onClick={() => router.push(href)}
         >

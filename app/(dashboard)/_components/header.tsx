@@ -15,7 +15,7 @@ export const Header = ({
 
     return (
         <header className='min-h-[60vh] bg-blue-600 w-full py-8 px-4'>
-            <div className="max-w-screen-xl mx-auto">
+            <div className="max-w-[1200px] mx-auto">
                 <div className="flex items-center justify-between mb-10 lg:mb-20">
                     <div className="flex items-center lg:gap-x-16">
                         <Logo />
