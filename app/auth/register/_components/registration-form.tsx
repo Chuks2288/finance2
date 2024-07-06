@@ -87,6 +87,7 @@ export const RegistrationForm = () => {
                     </p>
                     <div className="flex flex-col w-full space-y-2">
                         <Button
+                            variant="outline"
                             disabled={mutation.isPending}
                             onClick={() => onClickAuth("github")}
                             className="flex items-center justify-center w-full border-[1px] p-1.5 rounded-lg gap-x-3 cursor-pointer mt-3"
@@ -95,6 +96,7 @@ export const RegistrationForm = () => {
                             <p className="text-sm">Sign in with Github</p>
                         </Button>
                         <Button
+                            variant="outline"
                             disabled={mutation.isPending}
                             onClick={() => onClickAuth("google")}
                             className="flex items-center justify-center w-full border-[1px] p-1.5 rounded-lg gap-x-3 cursor-pointer mt-3"

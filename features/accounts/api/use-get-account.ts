@@ -4,7 +4,7 @@ import { getAccount } from "@/actions/accounts/get-account";
 export const useGetAccount = (id?: string) => {
     const query = useQuery({
         enabled: !!id,
-        queryKey: ["accounts", id],
+        queryKey: ["accounts", { id }],
         queryFn: async () => {
 
             if (!id) {

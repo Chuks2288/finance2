@@ -32,3 +32,14 @@ export const EditAccountSchema = z.object({
         message: "Account Name is required",
     }),
 });
+export const NewCategorySchema = z.object({
+    name: z.string().min(1, {
+        message: "Category Name is required",
+    }),
+});
+
+export const EditCategorySchema = z.object({
+    name: z.string().min(1, {
+        message: "Category Name is required",
+    }),
+});

@@ -2,19 +2,19 @@
 
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { EditAccountSchema } from "@/schema";
+import { EditCategorySchema } from "@/schema";
 import { z } from "zod";
 
-type FormValues = z.infer<typeof EditAccountSchema>;
+type FormValues = z.infer<typeof EditCategorySchema>;
 
-export const editAccount = async (id: string, values: FormValues) => {
+export const editCategory = async (id: string, values: FormValues) => {
     const user = await currentUser();
 
     if (!user) {
         return { error: "You are not authorized to access this page" };
     }
 
-    const validateFields = EditAccountSchema.safeParse(values);
+    const validateFields = EditCategorySchema.safeParse(values);
 
     if (!validateFields.success) {
         return { error: "Invalid fields" };
@@ -27,26 +27,26 @@ export const editAccount = async (id: string, values: FormValues) => {
     }
 
     try {
-        const existingAccount = await db.accounts.findUnique({
+        const existingCategory = await db.categories.findUnique({
             where: { id },
         });
 
-        if (!existingAccount) {
-            return { error: "Account not found" };
+        if (!existingCategory) {
+            return { error: "Category not found" };
         }
 
-        if (existingAccount.name === name) {
+        if (existingCategory.name === name) {
             return { error: "The new name must be different from the current name" };
         }
 
-        await db.accounts.update({
+        await db.categories.update({
             where: { id },
             data: { name },
         });
 
-        return { success: "Your account has been updated" };
+        return { success: "Your category has been updated" };
     } catch (error) {
-        console.error("Error updating account:", error);
-        return { error: "An error occurred while updating the account" };
+        console.error("Error updating category:", error);
+        return { error: "An error occurred while updating the category" };
     }
 };

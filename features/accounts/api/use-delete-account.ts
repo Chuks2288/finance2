@@ -4,16 +4,16 @@ import {
     useQueryClient,
 } from '@tanstack/react-query';
 
-import { editAccount } from '@/actions/accounts/edit-account';
+import { deleteAccount } from '@/actions/accounts/delete-account';
 
 
 import { toast } from "sonner";
 
-export const useEditAccount = (id: any) => {
+export const useDeleteAccount = (id: any) => {
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: (values: any) => editAccount(id, values),
+        mutationFn: () => deleteAccount(id),
         onSuccess: (data) => {
 
             if (data?.success) {

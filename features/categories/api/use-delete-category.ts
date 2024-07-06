@@ -4,16 +4,16 @@ import {
     useQueryClient,
 } from '@tanstack/react-query';
 
-import { editAccount } from '@/actions/accounts/edit-account';
+import { deleteCategory } from '@/actions/categories/delete-category';
 
 
 import { toast } from "sonner";
 
-export const useEditAccount = (id: any) => {
+export const useDeleteCategory = (id: any) => {
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
-        mutationFn: (values: any) => editAccount(id, values),
+        mutationFn: () => deleteCategory(id),
         onSuccess: (data) => {
 
             if (data?.success) {
@@ -24,8 +24,8 @@ export const useEditAccount = (id: any) => {
                 toast.error(data.error)
             }
 
-            queryClient.invalidateQueries({ queryKey: ['accounts'] });
-            queryClient.invalidateQueries({ queryKey: ['accounts', { id }] });
+            queryClient.invalidateQueries({ queryKey: ['categories'] });
+            queryClient.invalidateQueries({ queryKey: ['categories', { id }] });
         },
         onError: () => {
             toast.error("Something went wrong")

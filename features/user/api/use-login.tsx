@@ -35,7 +35,7 @@ export const useLogin = () => {
                 toast.error(data.error || urlError)
             }
 
-            queryClient.invalidateQueries({ queryKey: [user] });
+            queryClient.invalidateQueries({ queryKey: ["user"] });
         },
         onError: () => {
             toast.error("Something went wrong")

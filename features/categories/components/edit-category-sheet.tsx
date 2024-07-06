@@ -25,37 +25,37 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 
-import { useNewAccount } from "../hooks/use-new-account"
-import { EditAccountSchema, NewAccountSchema } from "@/schema";
-import { useCreateAccount } from "@/features/accounts/api/use-create-account";
+import { useNewCategory } from "@/features/categories/hooks/use-new-category";
+import { EditCategorySchema, NewCategorySchema } from "@/schema";
+import { useCreateCategory } from "@/features/categories/api/use-create-category";
 import { Loader2, Trash } from "lucide-react";
-import { AccountSkeleton } from "./skeleton/account-skeleton";
-import { useOpenAccount } from "@/features/accounts/hooks/use-open-account";
-import { useGetAccounts } from "../api/use-get-accounts";
-import { useGetAccount } from "../api/use-get-account";
-import { useEditAccount } from "../api/use-edit-account";
+import { CategorySkeleton } from "@/features/categories/components/skeleton/category-skeleton";
+import { useOpenCategory } from "../hooks/use-open-category";
+import { useGetCategories } from "../api/use-get-categories";
+import { useGetCategory } from "../api/use-get-category";
+import { useEditCategory } from "../api/use-edit-category";
 import { useEffect, useState } from "react";
 import { useConfirm } from "@/hooks/use-confirm";
-import { useDeleteAccount } from "../api/use-delete-account";
+import { useDeleteCategory } from "../api/use-delete-category";
 
-type FormValues = z.input<typeof EditAccountSchema>;
+type FormValues = z.input<typeof EditCategorySchema>;
 
 
-export const EditAccountSheet = () => {
-    const { isOpen, onClose, id } = useOpenAccount();
+export const EditCategoriesheet = () => {
+    const { isOpen, onClose, id } = useOpenCategory();
 
     const [ConfirmDialog, confirm] = useConfirm(
         "Are you sure?",
-        "You are about to delete this account"
+        "You are about to delete this category"
     )
 
-    const editMutation = useEditAccount(id);
-    const deleteMutation = useDeleteAccount(id);
-    const accountQuery = useGetAccount(id);
+    const editMutation = useEditCategory(id);
+    const deleteMutation = useDeleteCategory(id);
+    const categoryQuery = useGetCategory(id);
 
-    const account = accountQuery.data;
+    const category = categoryQuery.data;
 
-    const isLoading = accountQuery.isLoading;
+    const isLoading = categoryQuery.isLoading;
     const isPending =
         deleteMutation.isPending
         || editMutation.isPending;
@@ -73,16 +73,9 @@ export const EditAccountSheet = () => {
         }
     }
 
-    // const form = useForm<FormValues>({
-    //     resolver: zodResolver(EditAccountSchema),
-    //     defaultValues: {
-    //         name: account && !("error" in account) ? account.name : "",
-    //     },
-    //     mode: "onChange",
-    // });
 
     const form = useForm<FormValues>({
-        resolver: zodResolver(EditAccountSchema),
+        resolver: zodResolver(EditCategorySchema),
         defaultValues: {
             name: "",
         },
@@ -90,10 +83,10 @@ export const EditAccountSheet = () => {
     });
 
     useEffect(() => {
-        if (account && !("error" in account)) {
-            form.reset({ name: account.name });
+        if (category && !("error" in category)) {
+            form.reset({ name: category.name });
         }
-    }, [account, form]);
+    }, [category, form]);
 
 
     const onSubmit = (values: FormValues) => {
@@ -111,14 +104,14 @@ export const EditAccountSheet = () => {
             <Sheet open={isOpen} onOpenChange={onClose}>
                 <SheetContent className="bg-white space-y-4">
                     <SheetHeader>
-                        <SheetTitle>Edit Account</SheetTitle>
+                        <SheetTitle>Edit Category</SheetTitle>
                         <SheetDescription>
-                            Edit your account to track your transactions.
+                            Edit your category to track your transactions.
                         </SheetDescription>
                     </SheetHeader>
                     {isLoading ?
                         <div>
-                            <AccountSkeleton />
+                            <CategorySkeleton />
                         </div> :
                         <div>
                             <Form {...form}>
@@ -137,7 +130,7 @@ export const EditAccountSheet = () => {
                                                 <FormControl>
                                                     <Input
                                                         disabled={isPending}
-                                                        placeholder="e.g Cash, Bank, Credit Card"
+                                                        placeholder="e.g Food, Travel"
                                                         {...field}
                                                     />
                                                 </FormControl>
@@ -161,7 +154,7 @@ export const EditAccountSheet = () => {
                                                     className="bg-blue-500 w-full text-white gap-x-2 flex items-center"
                                                 >
                                                     <Trash className="size-4" />
-                                                    Delete account
+                                                    Delete category
                                                 </Button>
                                             </div>
                                         }
