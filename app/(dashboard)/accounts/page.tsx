@@ -8,12 +8,12 @@ import { useNewAccount } from "@/features/accounts/hooks/use-new-account"
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
 import { DataTableSkeleton } from "@/components/data-table-skeleton";
 import { useConfirm } from "@/hooks/use-confirm";
-import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete.accounts";
-import { useState } from "react";
+import { useBulkDeleteAccounts } from "@/features/accounts/api/use-bulk-delete-accounts";
+import { Accounts } from "@prisma/client";
+
 
 const AccountsPage = () => {
     const { onOpen } = useNewAccount();
-    const [selectedIds, setSelectedIds] = useState<string[]>([]);
     const [ConfirmDialog, confirm] = useConfirm(
         "Are you sure?",
         "You want to delete multiple accounts"
@@ -51,7 +51,7 @@ const AccountsPage = () => {
                         <DataTableSkeleton /> :
                         <DataTable
                             columns={columns}
-                            data={accounts as any}
+                            data={accounts as Accounts[]}
                             filters="name"
                             onDelete={(rows) => {
                                 const ids = rows.map((r) => r.original.id);

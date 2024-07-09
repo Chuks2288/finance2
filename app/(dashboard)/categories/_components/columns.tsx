@@ -7,12 +7,9 @@ import { ArrowUpDown } from "lucide-react"
 
 import { Checkbox } from "@/components/ui/checkbox"
 
-export type ClientCategory = {
-    id: string
-    name: string
-}
+import { Categories } from "@prisma/client"
 
-export const columns: ColumnDef<ClientCategory>[] = [
+export const columns: ColumnDef<Categories>[] = [
     {
         id: "select",
         header: ({ table }) => (

@@ -8,7 +8,6 @@ import { useNewCategory } from "@/features/categories/hooks/use-new-category";
 import { useGetCategories } from "@/features/categories/api/use-get-categories";
 import { DataTableSkeleton } from "@/components/data-table-skeleton";
 import { useBulkDeleteCategories } from "@/features/categories/api/use-bulk-delete-categories";
-import { useState } from "react";
 
 const CategoriesPage = () => {
     const { onOpen } = useNewCategory();

@@ -54,6 +54,8 @@ model Accounts {
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
+
+  transactions Transactions[] // One-to-many relationship
 }
 
 model Categories {
@@ -64,4 +66,23 @@ model Categories {
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
+
+  transactions Transactions[] // One-to-many relationship
+}
+
+model Transactions {
+  id     String   @id @default(cuid())
+  date   DateTime
+  payee  String
+  amount Int
+  note   String?
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  accountId String // Foreign key
+  Account   Accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  categoryId String? // Foreign key
+  Category   Categories? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 }
