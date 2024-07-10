@@ -16,14 +16,6 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
 
 import { useNewTransaction } from "../hooks/use-new-transaction"
 import { TransactionSchema } from "@/schema";
@@ -39,15 +31,17 @@ import { useCreateAccount } from "@/features/accounts/api/use-create-account";
 import { useCreateCategory } from "@/features/categories/api/use-create-category";
 
 import { Accounts, Categories } from "@prisma/client";
+import { useGetTransactions } from "../api/use-get-transactions";
 
 type FormValues = z.input<typeof TransactionSchema>;
 
 export const NewTransactionSheet = () => {
     const { isOpen, onClose } = useNewTransaction();
 
-    const [isLoading, setIsLoading] = useState(false);
+    // const [isLoading, setIsLoading] = useState(false);
 
-    const createMutation = useCreateTransaction();
+    const transactionMutation = useCreateTransaction();
+    const transactionQuery = useGetTransactions();
 
     const categoryQuery = useGetCategories();
     const categoryMutation = useCreateCategory();
@@ -59,7 +53,7 @@ export const NewTransactionSheet = () => {
     const categoryOptions = (categoryQuery.data ?? []).map((category: Categories) => ({
         label: category.name,
         value: category.id,
-    }))
+    }));
 
     const accountQuery = useGetAccounts();
     const accountMutation = useCreateAccount();
@@ -73,8 +67,15 @@ export const NewTransactionSheet = () => {
         value: account.id,
     }));
 
+    const isLoading =
+        accountQuery.isLoading ||
+        categoryQuery.isLoading ||
+        transactionQuery.isLoading;
+
+    const isPending = transactionMutation.isPending;
+
     const onSubmit = (values: FormValues) => {
-        createMutation.mutate(values, {
+        transactionMutation.mutate(values, {
             onSuccess: () => {
                 onClose();
             }
@@ -100,7 +101,7 @@ export const NewTransactionSheet = () => {
                         onCreateCategory={onCreateCategory}
                         categoryOptions={categoryOptions}
                         accountOptions={accountOptions}
-                        disabled={false}
+                        disabled={isPending}
                     />
                 }
             </SheetContent>

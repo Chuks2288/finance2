@@ -121,7 +121,7 @@ export const TransactionForm = ({
                                 <FormLabel>Payee</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder="e.g John Doe"
+                                        placeholder="Add a payee"
                                         {...field}
                                         disabled={disabled}
                                     />
@@ -138,9 +138,7 @@ export const TransactionForm = ({
                                 <FormControl>
                                     <AmountInput
                                         {...field}
-                                        // value={field.value}
-                                        // onChange={field.onChange}
-                                        placeholder="e.g 0.00"
+                                        placeholder="0.00"
                                         disabled={disabled}
                                     />
                                 </FormControl>

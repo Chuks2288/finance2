@@ -23,7 +23,7 @@ export const createTransaction = async (values: FormValues) => {
 
     const { date, payee, amount, note, categoryId, accountId } = validateFields.data;
 
-    if (!date || !payee || amount == null || !accountId) {
+    if (!date || !payee || amount === null || !accountId) {
         return { error: "All required fields must be provided" };
     }
 
