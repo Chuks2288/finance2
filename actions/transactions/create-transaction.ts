@@ -35,7 +35,7 @@ export const createTransaction = async (values: FormValues) => {
 
     await db.transactions.create({
         data: {
-            date: new Date(date),
+            date: new Date(),
             payee,
             amount: convertAmountToMiliunits((parseFloat(amount))),
             note,

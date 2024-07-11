@@ -18,6 +18,8 @@ import { DatePicker } from "@/components/date-picker";
 import { Textarea } from "@/components/ui/textarea";
 import { AmountInput } from "@/components/amount-input";
 import { SelectOptions } from "@/components/select-options";
+import { Transactions } from "@prisma/client";
+import { useEffect } from "react";
 
 type FormValues = z.input<typeof TransactionSchema>;
 
@@ -29,6 +31,7 @@ type Props = {
     accountOptions: { label: string; value: string }[];
     categoryOptions: { label: string; value: string }[];
     disabled?: boolean;
+    transaction?: Transactions | any;
 };
 
 export const TransactionForm = ({
@@ -39,6 +42,7 @@ export const TransactionForm = ({
     accountOptions,
     categoryOptions,
     disabled,
+    transaction
 }: Props) => {
     const form = useForm<FormValues>({
         resolver: zodResolver(TransactionSchema),
@@ -51,6 +55,20 @@ export const TransactionForm = ({
             accountId: "", // Set to ID initially
         },
     });
+
+    useEffect(() => {
+        if (transaction && !("error" in transaction)) {
+            form.reset({
+                date: transaction.date,
+                accountId: transaction.accountId,
+                categoryId: transaction.categoryId,
+                payee: transaction.payee,
+                amount: transaction.amount,
+                note: transaction.note,
+            });
+        }
+    }, [transaction, form]);
+
 
     const handleSubmit = (values: FormValues) => {
         onSubmit(values);

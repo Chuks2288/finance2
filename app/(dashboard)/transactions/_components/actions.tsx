@@ -9,8 +9,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { useOpenCategory } from "@/features/categories/hooks/use-open-category";
-import { useDeleteCategory } from "@/features/categories/api/use-delete-category";
+import { useOpenTransaction } from "@/features/transactions/hooks/use-open-transaction";
+import { useDeleteTransaction } from "@/features/transactions/api/use-delete-transaction";
 import { useConfirm } from "@/hooks/use-confirm";
 
 type Props = {
@@ -22,12 +22,12 @@ export const Actions = ({
 }: Props) => {
     const [ConfirmDialog, confirm] = useConfirm(
         "Are you sure?",
-        "You are about to delete this category"
+        "You are about to delete this transaction"
     )
 
-    const { onOpen } = useOpenCategory();
+    const { onOpen } = useOpenTransaction();
 
-    const deleteMutation = useDeleteCategory(id);
+    const deleteMutation = useDeleteTransaction(id);
 
     const onDelete = async () => {
         const ok = await confirm();

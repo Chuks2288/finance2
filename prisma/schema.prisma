@@ -81,8 +81,8 @@ model Transactions {
   updatedAt DateTime? @updatedAt
 
   accountId String // Foreign key
-  Account   Accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  account   Accounts @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   categoryId String? // Foreign key
-  Category   Categories? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category   Categories? @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 }

@@ -6,16 +6,15 @@ import { Button } from "@/components/ui/button"
 import { ArrowUpDown } from "lucide-react"
 
 import { Checkbox } from "@/components/ui/checkbox";
+import { format } from "date-fns"
+import { CategoryColumn } from "./category-column"
+import { Transactions } from "@prisma/client"
+import { formatCurrency } from "@/lib/utils"
+import { AccountColumn } from "./account-column"
+import { Badge } from "@/components/ui/badge";
 
-export type ClientTransactions = {
-    id: string
-    Date: string
-    Category: string
-    Description: string
-    Amount: string
-}
 
-export const columns: ColumnDef<ClientTransactions>[] = [
+export const columns: ColumnDef<Transactions>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -49,6 +48,15 @@ export const columns: ColumnDef<ClientTransactions>[] = [
                 </Button>
             )
         },
+        cell: ({ row }) => {
+            const date = row.getValue("date") as Date;
+
+            return (
+                <span>
+                    {format(date, "dd MMM, yyyy")}
+                </span>
+            )
+        }
     },
     {
         accessorKey: "Category",
@@ -63,6 +71,13 @@ export const columns: ColumnDef<ClientTransactions>[] = [
                 </Button>
             )
         },
+        cell: ({ row }) => (
+            <CategoryColumn
+                id={row.original.id}
+                category={row.original.category}
+                categoryId={row.original.categoryId}
+            />
+        )
     },
     {
         accessorKey: "Payee",
@@ -77,6 +92,11 @@ export const columns: ColumnDef<ClientTransactions>[] = [
                 </Button>
             )
         },
+        cell: ({ row }) => (
+            <span>
+                {row.original.payee}
+            </span>
+        )
     },
     {
         accessorKey: "Amount",
@@ -91,6 +111,18 @@ export const columns: ColumnDef<ClientTransactions>[] = [
                 </Button>
             )
         },
+        cell: ({ row }) => {
+            const amount = parseFloat(row.getValue("amount"));
+
+            return (
+                <Badge
+                    variant={amount < 0 ? "destructive" : "primary"}
+                    className="text-xs font-medium px-3.5 py-2.5"
+                >
+                    {formatCurrency(amount)}
+                </Badge>
+            )
+        }
     },
     {
         accessorKey: "Account",
@@ -105,6 +137,13 @@ export const columns: ColumnDef<ClientTransactions>[] = [
                 </Button>
             )
         },
+        cell: ({ row }) => (
+            <AccountColumn
+                row={row.original.id}
+                account={row.original.account}
+                accountId={row.original.accountId}
+            />
+        )
     },
     {
         id: "actions",

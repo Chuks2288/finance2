@@ -16,164 +16,97 @@ import {
     SheetHeader,
     SheetTitle,
 } from "@/components/ui/sheet";
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/components/ui/form";
 
-import { useNewAccount } from "../hooks/use-new-account"
-import { EditAccountSchema, NewAccountSchema } from "@/schema";
+import { useNewTransaction } from "../hooks/use-new-transaction"
+import { TransactionSchema } from "@/schema";
+import { useCreateTransaction } from "@/features/transactions/api/use-create-transaction";
+import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
+import { Loader2 } from "lucide-react";
+
+import { TransactionSkeleton } from "./skeleton/transaction-skeleton";
+import { useGetCategories } from "@/features/categories/api/use-get-categories";
+import { TransactionForm } from "./transaction-form";
+import { useState } from "react";
 import { useCreateAccount } from "@/features/accounts/api/use-create-account";
-import { Loader2, Trash } from "lucide-react";
-import { AccountSkeleton } from "./skeleton/account-skeleton";
-import { useOpenAccount } from "@/features/accounts/hooks/use-open-account";
-import { useGetAccounts } from "../api/use-get-transactions";
-import { useGetAccount } from "../api/use-get-transaction";
-import { useEditAccount } from "../api/use-edit-transaction";
-import { useEffect, useState } from "react";
-import { useConfirm } from "@/hooks/use-confirm";
-import { useDeleteAccount } from "../api/use-delete-transaction";
+import { useCreateCategory } from "@/features/categories/api/use-create-category";
 
-type FormValues = z.input<typeof EditAccountSchema>;
+import { Accounts, Categories } from "@prisma/client";
+import { useGetTransactions } from "../api/use-get-transactions";
+import { useEditTransaction } from "../api/use-edit-transaction";
+import { useOpenTransaction } from "../hooks/use-open-transaction";
+import { useGetTransaction } from "../api/use-get-transaction";
 
+type FormValues = z.input<typeof TransactionSchema>;
 
-export const EditAccountSheet = () => {
-    const { isOpen, onClose, id } = useOpenAccount();
+export const EditTransactionSheet = () => {
+    const { isOpen, onClose, id } = useOpenTransaction();
 
-    const [ConfirmDialog, confirm] = useConfirm(
-        "Are you sure?",
-        "You are about to delete this account"
-    )
+    const editMutation = useEditTransaction(id);
+    const transactionQuery = useGetTransaction(id);
+    const transaction = transactionQuery.data;
 
-    const editMutation = useEditAccount(id);
-    const deleteMutation = useDeleteAccount(id);
-    const accountQuery = useGetAccount(id);
-
-    const account = accountQuery.data;
-
-    const isLoading = accountQuery.isLoading;
-    const isPending =
-        deleteMutation.isPending
-        || editMutation.isPending;
-
-
-    const onDelete = async () => {
-        const ok = await confirm();
-
-        if (ok) {
-            deleteMutation.mutate(undefined, {
-                onSuccess: () => {
-                    onClose();
-                }
-            });
-        }
-    }
-
-    // const form = useForm<FormValues>({
-    //     resolver: zodResolver(EditAccountSchema),
-    //     defaultValues: {
-    //         name: account && !("error" in account) ? account.name : "",
-    //     },
-    //     mode: "onChange",
-    // });
-
-    const form = useForm<FormValues>({
-        resolver: zodResolver(EditAccountSchema),
-        defaultValues: {
-            name: "",
-        },
-        mode: "onChange",
+    const categoryQuery = useGetCategories();
+    const categoryMutation = useCreateCategory();
+    const onCreateCategory = (name: string) => categoryMutation.mutate({
+        name
     });
 
-    useEffect(() => {
-        if (account && !("error" in account)) {
-            form.reset({ name: account.name });
-        }
-    }, [account, form]);
+    // @ts-ignore
+    const categoryOptions = (categoryQuery.data ?? []).map((category: Categories) => ({
+        label: category.name,
+        value: category.id,
+    }));
 
+    const accountQuery = useGetAccounts();
+    const accountMutation = useCreateAccount();
+    const onCreateAccount = (name: string) => accountMutation.mutate({
+        name
+    });
+
+    // @ts-ignore
+    const accountOptions = (accountQuery.data ?? []).map((account: Accounts) => ({
+        label: account.name,
+        value: account.id,
+    }));
+
+    const isLoading =
+        accountQuery.isLoading ||
+        categoryQuery.isLoading ||
+        transactionQuery.isLoading;
+
+    const isPending = editMutation.isPending;
 
     const onSubmit = (values: FormValues) => {
         editMutation.mutate(values, {
             onSuccess: () => {
                 onClose();
-                form.reset();
             }
         });
     }
 
     return (
-        <>
-            <ConfirmDialog />
-            <Sheet open={isOpen} onOpenChange={onClose}>
-                <SheetContent className="bg-white space-y-4">
-                    <SheetHeader>
-                        <SheetTitle>Edit Account</SheetTitle>
-                        <SheetDescription>
-                            Edit your account to track your transactions.
-                        </SheetDescription>
-                    </SheetHeader>
-                    {isLoading ?
-                        <div>
-                            <AccountSkeleton />
-                        </div> :
-                        <div>
-                            <Form {...form}>
-                                <form
-                                    onSubmit={form.handleSubmit(onSubmit)}
-                                    className="space-y-4 mt-6"
-                                >
-                                    <FormField
-                                        name="name"
-                                        control={form.control}
-                                        render={({ field }) => (
-                                            <FormItem className="flex flex-col gap-y-1">
-                                                <FormLabel className="text-left">
-                                                    Name
-                                                </FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        disabled={isPending}
-                                                        placeholder="e.g Cash, Bank, Credit Card"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <div className="w-full flex flex-col gap-y-2">
-                                        <Button
-                                            type="submit"
-                                            disabled={!form.formState.isValid || isPending}
-                                            className="bg-blue-500 w-full text-white gap-x-2 flex items-center"
-                                        >
-                                            Save Changes
-                                        </Button>
-                                        {!!id &&
-                                            <div>
-                                                <Button
-                                                    onClick={onDelete}
-                                                    type="button"
-                                                    disabled={isPending}
-                                                    className="bg-blue-500 w-full text-white gap-x-2 flex items-center"
-                                                >
-                                                    <Trash className="size-4" />
-                                                    Delete account
-                                                </Button>
-                                            </div>
-                                        }
-                                    </div>
-                                </form>
-                            </Form>
-                        </div>
-                    }
-                </SheetContent>
-            </Sheet >
-        </>
+        <Sheet open={isOpen} onOpenChange={onClose}>
+            <SheetContent className="bg-white space-y-4 overflow-y-scroll">
+                <SheetHeader>
+                    <SheetTitle>Edit Transaction</SheetTitle>
+                    <SheetDescription>
+                        Edit transactions.
+                    </SheetDescription>
+                </SheetHeader>
+                {isLoading ?
+                    <TransactionSkeleton />
+                    :
+                    <TransactionForm
+                        onSubmit={onSubmit}
+                        onCreateAccount={onCreateAccount}
+                        onCreateCategory={onCreateCategory}
+                        categoryOptions={categoryOptions}
+                        accountOptions={accountOptions}
+                        disabled={isPending}
+                        transaction={transaction}
+                    />
+                }
+            </SheetContent>
+        </Sheet>
     )
 }
-
-

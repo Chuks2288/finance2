@@ -23,7 +23,7 @@ import { useCreateTransaction } from "@/features/transactions/api/use-create-tra
 import { useGetAccounts } from "@/features/accounts/api/use-get-accounts";
 import { Loader2 } from "lucide-react";
 
-import { AccountSkeleton } from "./skeleton/account-skeleton";
+import { TransactionSkeleton } from "./skeleton/transaction-skeleton";
 import { useGetCategories } from "@/features/categories/api/use-get-categories";
 import { TransactionForm } from "./transaction-form";
 import { useState } from "react";
@@ -93,7 +93,7 @@ export const NewTransactionSheet = () => {
                     </SheetDescription>
                 </SheetHeader>
                 {isLoading ?
-                    <AccountSkeleton />
+                    <TransactionSkeleton />
                     :
                     <TransactionForm
                         onSubmit={onSubmit}
