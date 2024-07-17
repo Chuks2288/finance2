@@ -14,6 +14,10 @@ export const getTransactions = async () => {
         const transactions = await db.transactions.findMany({
             orderBy: {
                 createdAt: 'desc', // or any other date field you want to use
+            },
+            include: {
+                category: true,
+                account: true,
             }
         });
         return transactions;
