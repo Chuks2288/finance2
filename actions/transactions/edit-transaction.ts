@@ -20,36 +20,26 @@ export const editTransaction = async (id: string, values: FormValues) => {
         return { error: "Invalid fields" };
     }
 
-    const { date, payee, amount, note, categoryId, accountId } = validateFields.data;
+    const validateData = validateFields.data;
 
-    if (!date || !payee || amount == null || !accountId) {
+    if (!validateData.date || !validateData.payee || !validateData.amount || !validateData.accountId) {
         return { error: "All required fields must be provided" };
     }
 
     try {
-        const existingTransaction = await db.transactions.findUnique({
-            where: { id },
-        });
-
-        if (!existingTransaction) {
-            return { error: "Transaction not found" };
-        }
-
         await db.transactions.update({
-            where: { id },
-            data: {
-                date,
-                payee,
-                // categoryId,
-                // accountId,
-                amount,
-                note,
+            where: {
+                id
             },
+            data: {
+                ...validateData,
+                amount: parseFloat(validateData.amount),
+            }
         });
 
-        return { success: "Your transaction has been updated" };
+        return { success: "Your transaction has been updated successfully." };
     } catch (error) {
         console.error("Error updating transaction:", error);
-        return { error: "An error occurred while updating the transaction" };
+        return { error: "An error occurred while updating the transaction." };
     }
 };

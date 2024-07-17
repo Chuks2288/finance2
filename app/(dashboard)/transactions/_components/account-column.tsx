@@ -1,18 +1,27 @@
+import { useOpenAccount } from "@/features/accounts/hooks/use-open-account"
 
 type Props = {
-    id: string;
     account: string | null;
     accountId: string | any;
 }
 
 export const AccountColumn = ({
-    id,
     account,
-    accountId
+    accountId,
 }: Props) => {
-    return (
-        <div>
+    const { onOpen: onOpenAccount } = useOpenAccount();
 
+    const onClick = () => {
+        onOpenAccount(accountId);
+    }
+
+    return (
+        <div
+            onClick={onClick}
+            className="flex items-center cursor-pointer hover:underline"
+        >
+            {account}
         </div>
     )
 }
+

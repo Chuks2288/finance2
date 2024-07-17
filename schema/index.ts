@@ -37,6 +37,7 @@ export const NewCategorySchema = z.object({
         message: "Category Name is required",
     }),
 });
+
 export const EditCategorySchema = z.object({
     name: z.string().min(1, {
         message: "Category Name is required",
@@ -44,16 +45,10 @@ export const EditCategorySchema = z.object({
 });
 
 export const TransactionSchema = z.object({
-    date: z.string().refine((val) => !isNaN(Date.parse(val)), {
-        message: "Invalid date format",
-    }),
-    payee: z.string().min(1, {
-        message: "Payee is required"
-    }),
-    amount: z.string().min(1, {
-        message: "Amount must be greater than zero",
-    }),
-    note: z.string().optional(),
+    date: z.coerce.date(),
     accountId: z.string(),
-    categoryId: z.string().optional(),
+    categoryId: z.string().nullable().optional(),
+    payee: z.string(),
+    amount: z.string(),
+    note: z.string().nullable().optional(),
 });

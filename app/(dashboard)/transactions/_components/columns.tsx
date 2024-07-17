@@ -1,18 +1,19 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
-import { Actions } from "./actions"
-import { Button } from "@/components/ui/button"
+// import { InferResponseType } from "hono";
 import { ArrowUpDown } from "lucide-react"
+import { ColumnDef } from "@tanstack/react-table"
+import { format } from "date-fns";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { format } from "date-fns"
-import { CategoryColumn } from "./category-column"
-import { Transactions } from "@prisma/client"
-import { formatCurrency } from "@/lib/utils"
-import { AccountColumn } from "./account-column"
+// import { client } from "@/lib/hono";
+import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button"
+import { Actions } from "./actions";
+import { formatCurrency } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-
+import { AccountColumn } from "./account-column";
+import { CategoryColumn } from "./category-column";
+import { Transactions } from "@prisma/client";
 
 export const columns: ColumnDef<Transactions>[] = [
     {
@@ -34,9 +35,11 @@ export const columns: ColumnDef<Transactions>[] = [
                 aria-label="Select row"
             />
         ),
+        enableSorting: false,
+        enableHiding: false,
     },
     {
-        accessorKey: "Date",
+        accessorKey: "date",
         header: ({ column }) => {
             return (
                 <Button
@@ -44,7 +47,7 @@ export const columns: ColumnDef<Transactions>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Date
-                    <ArrowUpDown className="ml-2 size-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
@@ -59,7 +62,7 @@ export const columns: ColumnDef<Transactions>[] = [
         }
     },
     {
-        accessorKey: "Category",
+        accessorKey: "category",
         header: ({ column }) => {
             return (
                 <Button
@@ -67,20 +70,22 @@ export const columns: ColumnDef<Transactions>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Category
-                    <ArrowUpDown className="ml-2 size-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
-        cell: ({ row }) => (
-            <CategoryColumn
-                id={row.original.id}
-                category={row.original.category}
-                categoryId={row.original.categoryId}
-            />
-        )
+        cell: ({ row }) => {
+            return (
+                <CategoryColumn
+                    id={row.original.id}
+                    category={row.original.category}
+                    categoryId={row.original.categoryId}
+                />
+            )
+        }
     },
     {
-        accessorKey: "Payee",
+        accessorKey: "payee",
         header: ({ column }) => {
             return (
                 <Button
@@ -88,18 +93,13 @@ export const columns: ColumnDef<Transactions>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Payee
-                    <ArrowUpDown className="ml-2 size-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
-        cell: ({ row }) => (
-            <span>
-                {row.original.payee}
-            </span>
-        )
     },
     {
-        accessorKey: "Amount",
+        accessorKey: "amount",
         header: ({ column }) => {
             return (
                 <Button
@@ -107,7 +107,7 @@ export const columns: ColumnDef<Transactions>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Amount
-                    <ArrowUpDown className="ml-2 size-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
@@ -116,7 +116,7 @@ export const columns: ColumnDef<Transactions>[] = [
 
             return (
                 <Badge
-                    variant={amount < 0 ? "destructive" : "primary"}
+                    variant={amount < 0 ? "destructive" : "secondary"}
                     className="text-xs font-medium px-3.5 py-2.5"
                 >
                     {formatCurrency(amount)}
@@ -125,7 +125,7 @@ export const columns: ColumnDef<Transactions>[] = [
         }
     },
     {
-        accessorKey: "Account",
+        accessorKey: "account",
         header: ({ column }) => {
             return (
                 <Button
@@ -133,21 +133,21 @@ export const columns: ColumnDef<Transactions>[] = [
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Account
-                    <ArrowUpDown className="ml-2 size-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
         },
-        cell: ({ row }) => (
-            <AccountColumn
-                row={row.original.id}
-                account={row.original.account}
-                accountId={row.original.accountId}
-            />
-        )
+        cell: ({ row }) => {
+            return (
+                <AccountColumn
+                    account={row.original.account}
+                    accountId={row.original.accountId}
+                />
+            )
+        }
     },
     {
         id: "actions",
         cell: ({ row }) => <Actions id={row.original.id} />
-    },
-
+    }
 ]
