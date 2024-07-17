@@ -1,7 +1,9 @@
+"use client";
+
 import { useOpenAccount } from "@/features/accounts/hooks/use-open-account"
 
 type Props = {
-    account: string | null;
+    account: string | any;
     accountId: string | any;
 }
 
@@ -20,7 +22,7 @@ export const AccountColumn = ({
             onClick={onClick}
             className="flex items-center cursor-pointer hover:underline"
         >
-            {account}
+            {account.name}
         </div>
     )
 }

@@ -70,11 +70,10 @@ export const columns: ColumnDef<TransactionWithDetails>[] = [
             </Button>
         ),
         cell: ({ row }) => {
-            const category = row.original.category?.name || "N/A";
             return (
                 <CategoryColumn
                     id={row.original.id}
-                    category={category}
+                    category={row.original.category}
                     categoryId={row.original.categoryId}
                 />
             );
@@ -127,7 +126,7 @@ export const columns: ColumnDef<TransactionWithDetails>[] = [
             </Button>
         ),
         cell: ({ row }) => {
-            const account = row.original.account?.name || "N/A";
+            const account = row.original.account;
             return <AccountColumn account={account} accountId={row.original.accountId} />;
         },
     },

@@ -6,7 +6,7 @@ import { TriangleAlert } from "lucide-react";
 
 type Props = {
     id: string;
-    category: string | null;
+    category: string | any;
     categoryId: string | any;
 }
 
@@ -35,7 +35,7 @@ export const CategoryColumn = ({
             )}
         >
             {!category && <TriangleAlert className="mr-2 size-4 shrink-0" />}
-            {category || "Uncategorized"}
+            {category?.name || "Uncategorized"}
         </div>
     )
 }
