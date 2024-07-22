@@ -63,6 +63,7 @@ const TransactionsPage = () => {
 
     const onSubmitImport = async (
         values: typeof TransactionSchema._input[],
+        // values: Omit<Transactions, "id">[],
     ) => {
         const accountId = await confirm();
 
@@ -75,7 +76,7 @@ const TransactionsPage = () => {
             accountId: accountId as string,
         }));
 
-        createTransactions.mutate(data, {
+        createTransactions.mutate(data as any, {
             onSuccess: () => {
                 onCancelImport();
             }
@@ -94,7 +95,6 @@ const TransactionsPage = () => {
             </>
         )
     }
-
 
     return (
         <>
