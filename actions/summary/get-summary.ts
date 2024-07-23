@@ -35,7 +35,7 @@ export const getSummary = async (query: any) => {
     const lastPeriodStart = subDays(startDate, periodLength);
     const lastPeriodEnd = subDays(endDate, periodLength);
 
-    const fetchFinancialData = async (userId: any, startDate: any, endDate: any, accountId: any) => {
+    const fetchFinancialData = async (userId: string, startDate: Date, endDate: Date, accountId?: string) => {
         const transactions = await db.transactions.findMany({
             where: {
                 accountId: accountId ? accountId : undefined,
@@ -59,8 +59,8 @@ export const getSummary = async (query: any) => {
         return { income, expenses, remaining };
     };
 
-    const currentPeriod = await fetchFinancialData(user.id, startDate, endDate, accountId);
-    const lastPeriod = await fetchFinancialData(user.id, lastPeriodStart, lastPeriodEnd, accountId);
+    const currentPeriod = await fetchFinancialData(user.id as string, startDate, endDate, accountId);
+    const lastPeriod = await fetchFinancialData(user.id as string, lastPeriodStart, lastPeriodEnd, accountId);
 
     const incomeChange = calculatePercentChange(currentPeriod.income, lastPeriod.income);
     const expensesChange = calculatePercentChange(currentPeriod.expenses, lastPeriod.expenses);
@@ -90,7 +90,7 @@ export const getSummary = async (query: any) => {
 
     const categories = categoryData.map((cat) => ({
         name: cat.categoryId, // Replace with actual category name if you have a category relation
-        value: Math.abs(cat._sum.amount as any),
+        value: Math.abs(cat._sum.amount as number),
     }));
 
     const topCategories = categories.slice(0, 3);
@@ -124,7 +124,7 @@ export const getSummary = async (query: any) => {
             date: day.date,
             income: day._sum.amount >= 0 ? day._sum.amount : 0,
             expenses: day._sum.amount < 0 ? Math.abs(day._sum.amount) : 0,
-        })) as any,
+        })),
         startDate,
         endDate
     );
