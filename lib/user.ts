@@ -11,6 +11,7 @@ export const getUserByEmail = async (email: string) => {
         return null;
     }
 }
+
 export const getCurrentUserByEmail = async (email: string) => {
     try {
         const user = await db.user.findFirst({
@@ -32,3 +33,4 @@ export const getUserById = async (id: string | undefined) => {
         return null;
     }
 };
+

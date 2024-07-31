@@ -1,5 +1,3 @@
-"use server";
-
 import { z } from "zod";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
@@ -35,7 +33,12 @@ export const getSummary = async (query: any) => {
     const lastPeriodStart = subDays(startDate, periodLength);
     const lastPeriodEnd = subDays(endDate, periodLength);
 
-    const fetchFinancialData = async (userId: string, startDate: Date, endDate: Date, accountId?: string) => {
+    const fetchFinancialData = async (
+        userId: string,
+        startDate: Date,
+        endDate: Date,
+        accountId?: string
+    ) => {
         const transactions = await db.transactions.findMany({
             where: {
                 accountId: accountId ? accountId : undefined,
@@ -52,9 +55,9 @@ export const getSummary = async (query: any) => {
             },
         });
 
-        const income = transactions.filter(t => t.amount >= 0).reduce((sum, t) => sum + t.amount, 0);
-        const expenses = transactions.filter(t => t.amount < 0).reduce((sum, t) => sum + t.amount, 0);
-        const remaining = transactions.reduce((sum, t) => sum + t.amount, 0);
+        const income = transactions.filter(t => t.amount >= 0).reduce((sum, t) => sum + parseFloat(t.amount as unknown as string), 0);
+        const expenses = transactions.filter(t => t.amount < 0).reduce((sum, t) => sum + parseFloat(t.amount as unknown as string), 0);
+        const remaining = transactions.reduce((sum, t) => sum + parseFloat(t.amount as unknown as string), 0);
 
         return { income, expenses, remaining };
     };
@@ -89,7 +92,7 @@ export const getSummary = async (query: any) => {
     });
 
     const categories = categoryData.map((cat) => ({
-        name: cat.categoryId, // Replace with actual category name if you have a category relation
+        name: cat.categoryId,
         value: Math.abs(cat._sum.amount as number),
     }));
 
@@ -122,8 +125,8 @@ export const getSummary = async (query: any) => {
     const days = fillMissingDays(
         activeDays.map((day: any) => ({
             date: day.date,
-            income: day._sum.amount >= 0 ? day._sum.amount : 0,
-            expenses: day._sum.amount < 0 ? Math.abs(day._sum.amount) : 0,
+            income: parseFloat(day._sum.amount as unknown as string) >= 0 ? parseFloat(day._sum.amount as unknown as string) : 0,
+            expenses: parseFloat(day._sum.amount as unknown as string) < 0 ? Math.abs(parseFloat(day._sum.amount as unknown as string)) : 0,
         })),
         startDate,
         endDate
@@ -142,3 +145,5 @@ export const getSummary = async (query: any) => {
         },
     };
 };
+
+

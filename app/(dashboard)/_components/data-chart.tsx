@@ -4,11 +4,11 @@ import { useGetSummary } from "@/features/summary/api/use-get-summary"
 import { Charts } from "./charts"
 import { SpendingPie } from "./spending-pie"
 import { DataChartsSkeleton } from "./skeleton/data-charts-skeleton";
-import { data } from "@/data";
+// import { data } from "@/data";
 
 export const DataCharts = () => {
     const {
-        // data,
+        data,
         isLoading
     } = useGetSummary();
 

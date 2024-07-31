@@ -39,23 +39,26 @@ export const NewTransactionSheet = () => {
         name
     });
 
-    // @ts-ignore
-    const categoryOptions = (categoryQuery.data ?? []).map((category) => ({
-        label: category.name,
-        value: category.id,
-    }))
-
+    let categoryOptions: { label: string; value: string }[] = [];
+    if (Array.isArray(categoryQuery.data)) {
+        categoryOptions = categoryQuery.data.map((category) => ({
+            label: category.name,
+            value: category.id,
+        }));
+    }
     const accountQuery = useGetAccounts();
     const accountMutation = useCreateAccount();
     const onCreateAccount = (name: string) => accountMutation.mutate({
         name
     });
 
-    // @ts-ignore
-    const accountOptions = (accountQuery.data ?? []).map((account) => ({
-        label: account.name,
-        value: account.id,
-    }));
+    let accountOptions: { label: string; value: string }[] = [];
+    if (Array.isArray(accountQuery.data)) {
+        accountOptions = accountQuery.data.map((account) => ({
+            label: account.name,
+            value: account.id,
+        }));
+    }
 
     const isPending =
         createMutation.isPending ||

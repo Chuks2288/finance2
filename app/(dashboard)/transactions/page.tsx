@@ -62,8 +62,8 @@ const TransactionsPage = () => {
         deleteBulkTransactions.isPending;
 
     const onSubmitImport = async (
-        values: typeof TransactionSchema._input[],
-        // values: Omit<Transactions, "id">[],
+        // values: typeof TransactionSchema._input[],
+        values: Omit<Transactions, "id">[],
     ) => {
         const accountId = await confirm();
 

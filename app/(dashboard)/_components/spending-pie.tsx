@@ -17,9 +17,9 @@ import { FileSearch } from "lucide-react";
 
 type Props = {
     data: {
-        name: string;
+        name: string | any;
         value: number;
-    }[]
+    }[] | undefined;
 }
 
 export const SpendingPie = ({
@@ -73,9 +73,9 @@ export const SpendingPie = ({
                 </Select>
             </div>
             {data.length === 0 ?
-                <div className="flex h-full items-center justify-center">
-                    <div className="flex items-center gap-x-3">
-                        <FileSearch className="size-4" />
+                <div className="flex w-full min-h-[400px] items-center justify-center">
+                    <div className="flex items-center gap-x-2">
+                        <FileSearch className="size-6" />
                         <p className="text-muted-foreground">
                             No Search found for this data
                         </p>

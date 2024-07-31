@@ -20,22 +20,25 @@ export const useGetSummary = () => {
 
             return {
                 ...data,
-                data: {
-                    ...data.data,
-                    incomeAmount: (data?.data?.incomeAmount),
-                    expensesAmount: (data?.data?.expensesAmount),
-                    remainingAmount: (data?.data?.remainingAmount),
-                    categories: data?.data?.categories.map((category) => ({
-                        ...category,
-                        value: convertAmountFromiliunits(category.value),
-                    })),
-                    days: data?.data?.days.map((day) => ({
-                        ...day,
-                        income: convertAmountFromiliunits(day.income),
-                        expenses: convertAmountFromiliunits(day.expenses),
-                    }))
-                }
-            };
+                // data: {
+                //     ...data.data,
+                incomeAmount: (data?.data?.incomeAmount),
+                expensesAmount: (data?.data?.expensesAmount),
+                remainingAmount: (data?.data?.remainingAmount),
+                categories: data?.data?.categories.map((category) => ({
+                    ...category,
+                    // value: convertAmountFromiliunits(category.value),
+                    value: category.value,
+                })),
+                days: data?.data?.days.map((day) => ({
+                    ...day,
+                    // income: convertAmountFromiliunits(day.income),
+                    income: day.income,
+                    // expenses: convertAmountFromiliunits(day.expenses),
+                    expenses: day.expenses,
+                }))
+            }
+            // };
         },
     });
 

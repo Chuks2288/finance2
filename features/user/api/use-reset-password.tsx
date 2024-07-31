@@ -1,18 +1,19 @@
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
     useMutation,
     QueryClient,
-    useQueryClient,
 } from '@tanstack/react-query';
 
-import { createAccount } from '@/actions/accounts/create-account';
+import { reset } from '@/actions/user/reset';
+
 import { toast } from "sonner";
 
-export const useCreateAccount = () => {
-    const queryClient = useQueryClient();
+export const useResetPassword = () => {
+    const queryClient = new QueryClient();
 
     const mutation = useMutation({
-        mutationFn: createAccount,
+        mutationFn: reset,
         onSuccess: (data) => {
 
             if (data?.success) {
@@ -23,9 +24,7 @@ export const useCreateAccount = () => {
                 toast.error(data.error)
             }
 
-            queryClient.invalidateQueries({ queryKey: ['accounts'] });
-            queryClient.invalidateQueries({ queryKey: ['transactions'] });
-            queryClient.invalidateQueries({ queryKey: ['summary'] });
+            queryClient.invalidateQueries({ queryKey: ['user'] });
         },
         onError: () => {
             toast.error("Something went wrong")

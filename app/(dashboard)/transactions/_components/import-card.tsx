@@ -122,16 +122,15 @@ export const ImportCard = ({
             };
         });
 
-
         onSubmit(formattedData);
     }
 
     return (
         <main className="mx-4 pb-20">
-            <div className="min-h-[50vh] max-w-[1200px] mx-auto rounded-md -mt-20 bg-white shadow-md p-6">
+            <div className="min-h-[50vh] max-w-[1200px] mx-auto rounded-md -mt-20 bg-white shadow-md p-6 space-y-4">
                 <div className="flex md:flex-row flex-col items-center justify-between space-y-3">
                     <h2 className="text-2xl font-bold self-start">
-                        Transactions Page
+                        Import Transactions
                     </h2>
                     <div className="flex md:flex-row flex-col md:w-auto w-full items-center gap-3">
                         <Button
@@ -141,7 +140,6 @@ export const ImportCard = ({
                         >
                             Cancel
                         </Button>
-
                         <Button
                             size="sm"
                             disabled={progress < requiredOptions.length}

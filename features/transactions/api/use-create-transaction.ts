@@ -24,6 +24,7 @@ export const useCreateTransaction = () => {
             }
 
             queryClient.invalidateQueries({ queryKey: ['transactions'] });
+            queryClient.invalidateQueries({ queryKey: ['summary'] });
         },
         onError: () => {
             toast.error("Something went wrong")

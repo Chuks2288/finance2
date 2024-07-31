@@ -52,3 +52,18 @@ export const TransactionSchema = z.object({
     amount: z.string(),
     note: z.string().nullable().optional(),
 });
+
+export const ResetSchema = z.object({
+    email: z.string().min(1, {
+        message: "Email is required",
+    }),
+});
+
+export const NewPasswordSchema = z.object({
+    password: z.string().min(8, {
+        message: "Password is required",
+    }),
+    confirmPassword: z.string().min(8, {
+        message: "Password must match",
+    }),
+});

@@ -1,31 +1,33 @@
 
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
     useMutation,
     QueryClient,
-    useQueryClient,
 } from '@tanstack/react-query';
 
-import { createAccount } from '@/actions/accounts/create-account';
+import { newPassword } from '@/actions/user/new-password';
+
 import { toast } from "sonner";
 
-export const useCreateAccount = () => {
-    const queryClient = useQueryClient();
+export const useNewPassword = () => {
+    const queryClient = new QueryClient();
+
+    const router = useRouter();
 
     const mutation = useMutation({
-        mutationFn: createAccount,
+        mutationFn: newPassword,
         onSuccess: (data) => {
 
             if (data?.success) {
                 toast.success(data.success);
+                router.push("/auth/login");
             }
 
             if (data?.error) {
                 toast.error(data.error)
             }
 
-            queryClient.invalidateQueries({ queryKey: ['accounts'] });
-            queryClient.invalidateQueries({ queryKey: ['transactions'] });
-            queryClient.invalidateQueries({ queryKey: ['summary'] });
+            queryClient.invalidateQueries({ queryKey: ['user'] });
         },
         onError: () => {
             toast.error("Something went wrong")
