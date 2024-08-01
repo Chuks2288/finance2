@@ -34,3 +34,18 @@ export const getUserById = async (id: string | undefined) => {
     }
 };
 
+export const updateUserIP = async (
+    userId: any,
+    ipAddress: string,
+    loginDate: Date,
+    loginDevice: string
+) => {
+    await db.user.update({
+        where: { id: userId },
+        data: {
+            ipAddress,
+            loginDate,
+            loginDevice
+        },
+    });
+};

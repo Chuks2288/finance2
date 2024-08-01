@@ -2,6 +2,8 @@
 import { Resend } from "resend";
 import { ResetPassword } from "@/emails/reset-password";
 import ResetSuccessMessage from "@/emails/reset-success-message";
+import { RegisterWelcomeMessage } from "@/emails/register-welcome-message";
+import IPChangeNotification from "@/emails/ipchange-notification";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -31,8 +33,42 @@ export const PasswodResetSuccessMessage = async (
   await resend.emails.send({
     from: "onboarding@resend.dev",
     to: email,
-    subject: "Reset your password",
+    subject: "Password Reset Successfull",
     react: ResetSuccessMessage(),
+  });
+};
+
+export const RegisterWelcomeMessageEmail = async (
+  email: string,
+) => {
+
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: email,
+    subject: "Registration Successful",
+    react: RegisterWelcomeMessage(),
+  });
+};
+
+
+
+export const sendIPChangeNotification = async (
+  email: string,
+  ipAddress: string,
+  country: string,
+  loginDate: Date,
+  loginDevice: string
+) => {
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: email,
+    subject: "New Login from a Different IP Address",
+    react: IPChangeNotification({
+      ipAddress,
+      country,
+      loginDate,
+      loginDevice
+    }),
   });
 };
 

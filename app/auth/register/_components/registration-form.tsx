@@ -123,7 +123,7 @@ export const RegistrationForm = () => {
                                                 </FormLabel>
                                                 <FormControl>
                                                     <Input
-                                                        disabled={false}
+                                                        disabled={mutation.isPending}
                                                         placeholder=""
                                                         {...field}
                                                         type={type}

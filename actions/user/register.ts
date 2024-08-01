@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import { RegisterSchema } from "@/schema";
 import { getUserByEmail } from "@/lib/user";
 import { db } from "@/lib/db";
+import { RegisterWelcomeMessageEmail } from "@/lib/mail";
 
 
 type FormValues = z.infer<typeof RegisterSchema>
@@ -22,7 +23,6 @@ export const register = async (values: FormValues) => {
     // if (!email.endsWith("@chuks.com")) {
     //     return { error: "This is not a company domain" };
     // }
-
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -43,7 +43,11 @@ export const register = async (values: FormValues) => {
             email,
             password: hashedPassword
         }
-    })
+    });
+
+    await RegisterWelcomeMessageEmail(
+        email
+    )
 
     return { success: "You have successfull created your account" }
 }

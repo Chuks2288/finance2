@@ -20,7 +20,7 @@ export const ResetSuccessMessage = () => {
             <Body style={main}>
                 <Container style={container}>
                     <Img
-                        src="/logo.svg"
+                        src={`/static/logo.svg`}
                         width="40"
                         height="33"
                         alt="finance"
