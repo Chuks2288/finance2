@@ -1,7 +1,7 @@
 "use client";
 
 import { z } from "zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Loader2 } from "lucide-react";
 import { IoCaretForward } from "react-icons/io5";
@@ -27,7 +27,10 @@ type FormValues = z.input<typeof NewPasswordSchema>;
 
 export const NewPasswordForm = () => {
     const router = useRouter();
-    const mutation = useNewPassword();
+    const searchParams = useSearchParams();
+    const token = searchParams.get('token');
+
+    const mutation = useNewPassword({ token });
 
     const onClick = () => {
         router.push("/auth/login");
@@ -43,19 +46,16 @@ export const NewPasswordForm = () => {
     });
 
     const onSubmit = (values: FormValues) => {
-        mutation.mutate(values);
-    }
+        mutation.mutate(values)
+    };
 
     return (
         <div className="flex flex-1 items-center justify-center">
             <div className="lg:border-0 border-2 text-center w-full flex justify-center items-center max-w-lg mx-2 rounded-md p-4">
                 <div className="flex flex-col gap-y-2 w-full">
                     <h2 className="font-bold text-xl">
-                        Forgot Your Password?
+                        Reset your password
                     </h2>
-                    <p className="text-sm">
-                        Please input your email to continue
-                    </p>
                     <div className="py-5 space-y-3">
                         <Form {...form}>
                             <form

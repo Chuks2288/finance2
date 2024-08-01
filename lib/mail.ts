@@ -1,10 +1,13 @@
 
 import { Resend } from "resend";
-import PasswordResetLink from "@/resend/emails/password-reset-link";
+import { ResetPassword } from "@/emails/reset-password";
+import ResetSuccessMessage from "@/emails/reset-success-message";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const domain = process.env.NEXT_PUBLIC_APP_URL;
+
+
 
 export const sendPasswordResetEmail = async (
   email: string,
@@ -12,23 +15,24 @@ export const sendPasswordResetEmail = async (
 ) => {
   const resetLink = `${domain}/auth/new-password?token=${token}`;
 
+
   await resend.emails.send({
     from: "onboarding@resend.dev",
     to: email,
     subject: "Reset your password",
-    // html: `<p>Click <a href="${resetLink}">here</a> to reset password.</p>`
-    react: <PasswordResetLink resetLink={ resetLink } />
+    react: ResetPassword({ resetPasswordLink: resetLink })
   });
 };
 
-// import { Resend } from 'resend';
-// import { Email } from './email';
+export const PasswodResetSuccessMessage = async (
+  email: string,
+) => {
 
-// const resend = new Resend('re_123456789');
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: email,
+    subject: "Reset your password",
+    react: ResetSuccessMessage(),
+  });
+};
 
-// await resend.emails.send({
-//   from: 'you@example.com',
-//   to: 'user@gmail.com',
-//   subject: 'hello world',
-//   react: <Email url="https://example.com" />,
-// })

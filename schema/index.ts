@@ -66,4 +66,5 @@ export const NewPasswordSchema = z.object({
     confirmPassword: z.string().min(8, {
         message: "Password must match",
     }),
+    // token: z.string(),
 });
