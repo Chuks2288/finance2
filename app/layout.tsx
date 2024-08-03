@@ -6,6 +6,8 @@ import { Toaster } from "sonner";
 
 import { QueryProvider } from "@/providers/query-provider";
 import { SheetProvider } from "@/providers/sheet-provider";
+import ModalProvider from "@/components/modal-provider";
+import ProtectedLayout from "@/components/layout/protected-layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,9 +35,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <QueryProvider>
-          <SheetProvider />
-          <Toaster />
-          {children}
+          <ProtectedLayout>
+            <SheetProvider />
+            <Toaster />
+            <ModalProvider />
+            {children}
+          </ProtectedLayout>
         </QueryProvider>
       </body>
     </html>

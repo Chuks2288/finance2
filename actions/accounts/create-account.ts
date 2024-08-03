@@ -1,5 +1,6 @@
 "use server";
 
+import { auth } from "@/auth";
 import { currentUser } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { NewAccountSchema } from "@/schema";
@@ -11,15 +12,16 @@ export const createAccount = async (
     values: FormValues
 ) => {
 
+    const userAuth = await auth();
     const user = await currentUser();
 
     // if (!user) {
     //     return redirect("/auth/login");
     // }
 
-    if (!user) {
-        return { error: "You are authorized to access this page" }
-    }
+    // if (!user) {
+    //     return { error: "You are not authorized to access this page" }
+    // }
 
     const validateFields = NewAccountSchema.safeParse(values);
 

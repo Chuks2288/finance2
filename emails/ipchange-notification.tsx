@@ -21,10 +21,6 @@ interface IPChangeNotificationProps {
     country?: string;
 }
 
-const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "";
-
 export const IPChangeNotification = ({
     loginDate,
     loginDevice,
@@ -43,14 +39,14 @@ export const IPChangeNotification = ({
             <Body style={main}>
                 <Container>
                     <Section style={logo}>
-                        <Img src={`${baseUrl}/static/yelp-logo.png`} />
+                        <Img src="/static/logo.svg" />
                     </Section>
                     <Section style={content}>
                         <Row>
                             <Img
                                 style={image}
                                 width={620}
-                                src={`${baseUrl}/static/yelp-logo.png`}
+                                src="/static/logo.svg"
                             />
                         </Row>
 
@@ -119,7 +115,7 @@ export const IPChangeNotification = ({
                         <Img
                             style={image}
                             width={620}
-                            src={`${baseUrl}/static/yelp-footer.png`}
+                            src="/static/logo.svg"
                         />
                     </Section>
 
