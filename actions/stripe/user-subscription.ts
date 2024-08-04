@@ -32,11 +32,11 @@ export const createStripeUrl = async () => {
         return { data: stripeSession.url };
     }
 
+    // @ts-ignore
     const stripeSession = await stripe.checkout.sessions.create({
         // @ts-ignore
         mode: "subscription",
         payment_method_types: ["card"],
-        // payment_method_types: ["card", "paypal"],
         customer_email: user.email,
         line_items: [
             {
@@ -60,39 +60,6 @@ export const createStripeUrl = async () => {
         success_url: returnUrl,
         cancel_url: returnUrl,
     })
-
-    // const sessionParams: Stripe.Checkout.SessionCreateParams = {
-    //     mode: "subscription",
-    //     payment_method_types: ["card"],
-    //     customer_email: user.email as string,  // Ensure user.email is a string
-    //     line_items: [
-    //         {
-    //             price_data: {
-    //                 currency: "USD",
-    //                 product_data: {
-    //                     name: "Finance Pro",
-    //                     description: "Unlimited Hearts",
-    //                 },
-    //                 unit_amount: 2000, // $20.00 USD
-    //                 recurring: {
-    //                     interval: "month",
-    //                 },
-    //             },
-    //             quantity: 1,
-    //         },
-    //     ],
-    //     metadata: {
-    //         userId: user.id as string,
-    //     },
-    //     success_url: returnUrl,
-    //     cancel_url: returnUrl,
-    // };
-
-    // const stripeSession = await stripe.checkout.sessions.create(sessionParams);
-
-    // if (typeof stripeSession.url !== 'string') {
-    //     throw new Error("Failed to create Stripe session");
-    // }
 
     return { data: stripeSession.url };
 };

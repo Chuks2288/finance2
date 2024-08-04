@@ -18,19 +18,7 @@ export const SettingsForm = ({
     isPro
 }: Props) => {
 
-    const [isPending, startTransition] = useTransition();
-
-    const onUpgrade = () => {
-        startTransition(() => {
-            createStripeUrl()
-                .then((response) => {
-                    if (response.data) {
-                        window.location.href = response.data;
-                    }
-                })
-                .catch(() => toast.error("Something went wrong"))
-        })
-    }
+    const { mutate: onUpgrade, isPending } = useCreateStripeUrl();
 
     return (
         <main className="mx-4 pb-20">
@@ -49,7 +37,7 @@ export const SettingsForm = ({
                     <Button
                         className={cn(
                             "border-2 rounded-sm bg-rose-500 hover:bg-red-400 focus:bg-rose-400",
-                            isPro && "border-2 rounded-sm bg-green-500 hover:bg-green-400 focus:bg-green-400"
+                            // isPro && "border-2 rounded-sm bg-green-500 hover:bg-green-400 focus:bg-green-400"
                         )}
                         disabled={isPending}
                     >
@@ -66,10 +54,10 @@ export const SettingsForm = ({
                     </h4>
                     <Button
                         className=""
-                        onClick={onUpgrade}
+                        onClick={() => onUpgrade()}
                         disabled={isPending}
                     >
-                        Manage Subscription
+                        {isPro ? "Manage Subscription" : "Upgrade"}
                     </Button>
                 </div>
             </div>

@@ -66,7 +66,6 @@ const TransactionsPage = () => {
         deleteBulkTransactions.isPending;
 
     const onSubmitImport = async (
-        // values: typeof TransactionSchema._input[],
         values: Omit<Transactions, "id">[],
     ) => {
         const accountId = await confirm();
@@ -113,6 +112,7 @@ const TransactionsPage = () => {
                                 size="sm"
                                 onClick={onOpen}
                                 className="flex items-center w-full md:w-auto gap-x-2 bg-black text-white text-sm font-bold"
+                                disabled={isLoading}
                             >
                                 <Plus className="size-4" />
                                 Add new
@@ -120,6 +120,7 @@ const TransactionsPage = () => {
 
                             <UploadButton
                                 onUpload={onUpload}
+                                disabled={isLoading}
                             />
                         </div>
                     </div>

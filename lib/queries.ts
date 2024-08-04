@@ -1,11 +1,9 @@
-import { auth } from "@/auth";
 import { cache } from "react";
 import { db } from "./db";
 import { currentUser } from "./auth";
 
 const DAY_IN_MS = 86_400_000;
 export const getUserSubscription = cache(async () => {
-    // const userId = await auth();
     const user = await currentUser();
     const userId = user?.id;
 
@@ -36,6 +34,3 @@ export const hasActiveSubscription = async () => {
 
 }
 
-// export const isPro = async () => {
-//     await hasActiveSubscription();
-// }

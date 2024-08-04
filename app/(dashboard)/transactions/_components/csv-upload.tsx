@@ -3,42 +3,25 @@ import { useCSVReader } from "react-papaparse";
 
 import { Button } from "@/components/ui/button";
 import { useCreateStripeUrl } from "@/features/stripe/api/use-create-stripe";
-import { useProModal } from "@/hooks/use-pro-modal";
-import { useEffect, useState } from "react";
-import { hasActiveSubscription } from "@/lib/queries";
 
 type Props = {
     onUpload: (results: any) => void;
     disabled: boolean;
+    isPro: boolean;
 }
-export const UploadButton = ({
+export const CsvUpload = ({
     onUpload,
     disabled,
+    isPro,
 }: Props) => {
     const { CSVReader } = useCSVReader();
-    const [isPro, setisPro] = useState(false);
-
-    const { onOpen } = useProModal();
 
     const { mutate: onUpgrade, isPending } = useCreateStripeUrl();
 
-    useEffect(() => {
-        const checkSubscription = async () => {
-            const isActive = await hasActiveSubscription();
-            setisPro(isActive);
-        };
-
-        checkSubscription();
-    }, []);
-
     // TODO: Add a paywall
-    const onUploadClick = () => {
-        if (isPro) {
-            return null;
-        } else {
-            onOpen();
-        }
-    }
+    // const onUploadClick = () {
+
+    // }
 
     return (
         <CSVReader onUploadAccepted={onUpload}>
@@ -47,8 +30,7 @@ export const UploadButton = ({
                     size="sm"
                     className="w-full lg:w-auto"
                     {...getRootProps()}
-                    disabled={disabled}
-                    onClick={onUploadClick}
+                // disabled={disabled}
                 >
                     <Upload className="size-4 mr-2" />
                     import
