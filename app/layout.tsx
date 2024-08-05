@@ -9,6 +9,9 @@ import { QueryProvider } from "@/providers/query-provider";
 import { SheetProvider } from "@/providers/sheet-provider";
 import ModalProvider from "@/components/modal-provider";
 import ProtectedLayout from "@/components/layout/protected-layout";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
+import { currentUser } from "@/lib/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,6 +34,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
   return (
     <html lang="en">
       <body className={inter.className}>

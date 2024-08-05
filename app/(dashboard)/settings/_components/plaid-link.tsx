@@ -3,9 +3,7 @@ import { useRouter } from "next/navigation";
 import { PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink } from "react-plaid-link";
 
 import { cn } from "@/lib/utils"
-
 import { Button } from "@/components/ui/button"
-
 import { User } from "@prisma/client";
 import { createLinkToken, exchangePublicToken } from "@/lib/plaid";
 
@@ -22,6 +20,7 @@ export const PlaidLink = ({
 }: Props) => {
     const router = useRouter();
     const [token, setToken] = useState("");
+    const [isConnected, setIsConnected] = useState(false);
 
     useEffect(() => {
         const getLinkToken = async () => {
@@ -37,6 +36,7 @@ export const PlaidLink = ({
             publicToken: public_token,
             user,
         });
+        setIsConnected(true);
         router.push("/");
     }, [user]);
 
@@ -54,11 +54,10 @@ export const PlaidLink = ({
                 className={cn(
                     "border-2 rounded-sm bg-rose-500 hover:bg-red-400 focus:bg-rose-400",
                 )}
-            // disabled={!ready}
+                disabled={disabled}
             >
-                Connect
+                {isConnected ? "Disconnect" : "Connect"}
             </Button>
         </>
     )
 }
-

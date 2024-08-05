@@ -15,6 +15,7 @@ export const SidebarButton = ({
 }: Props) => {
     return (
         <Button
+            variant="ghost"
             key={label}
             className={cn(
                 "hover:bg-slate-300/50 w-full justify-start",

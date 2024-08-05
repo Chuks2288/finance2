@@ -32,11 +32,11 @@ export const SettingsForm = ({
                     Settings
                 </h2>
                 <Separator />
-                <div className="flex items-center justify-between font-medium text-md">
+                <div className="flex sm:flex-row flex-col sm:items-center items-start gap-y-3 justify-between font-medium text-md">
                     <h3 className="font-bold">
                         Bank account
                     </h3>
-                    <h4 className="-ml-10">
+                    <h4 className="sm:-ml-10 ml-0">
                         Bank account Not connected
                     </h4>
                     <PlaidLink
@@ -46,7 +46,7 @@ export const SettingsForm = ({
                     />
                 </div>
                 <Separator />
-                <div className="flex items-center justify-between font-medium text-md">
+                <div className="flex sm:flex-row flex-col sm:items-center items-start gap-y-3 justify-between font-medium text-md">
                     <h3 className="font-bold">
                         Subscription
                     </h3>

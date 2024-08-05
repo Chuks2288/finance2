@@ -8,23 +8,24 @@ datasource db {
 }
 
 model User {
-  id                String    @id @default(cuid())
-  name              String?
-  email             String    @unique
-  emailVerified     DateTime?
-  image             String?
-  password          String?
-  ipAddress         String?
-  loginDate         DateTime?
-  loginDevice       String?
-  accounts          Account[]
-  sessions          Session[]
-  dwollaCustomerId  String? // Added Dwolla customer ID
-  dwollaCustomerUrl String? // Added Dwolla customer URL
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  ipAddress     String?
+  loginDate     DateTime?
+  loginDevice   String?
+  accounts      Account[]
+  sessions      Session[]
+  // dwollaCustomerId  String? // Added Dwolla customer ID
+  // dwollaCustomerUrl String? // Added Dwolla customer URL
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Bank      Bank[]
+
+  Bank Bank[]
 }
 
 model Account {
@@ -40,11 +41,6 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  // Plaid-specific fields
-  plaidId          String?
-  fundingSourceUrl String? // Dwolla-specific field
-  sharableId       String? // Encrypted ID for sharing
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -62,14 +58,14 @@ model Session {
 }
 
 model Bank {
-  id               String  @id @default(cuid())
-  userId           String
-  plaidId          String? // Plaid-specific identifier
-  bankId           String? // Item ID from Plaid
-  accountId        String? // Account ID from Plaid
-  accessToken      String? // Access token from Plaid
-  fundingSourceUrl String? // Dwolla-specific field
-  sharableId       String? // Encrypted ID for sharing
+  id          String  @id @default(cuid())
+  userId      String
+  plaidId     String? // Plaid-specific identifier
+  bankId      String? // Item ID from Plaid
+  accountId   String? // Account ID from Plaid
+  accessToken String? // Access token from Plaid
+  // fundingSourceUrl String? // Dwolla-specific field
+  // sharableId  String? // Encrypted ID for sharing
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
