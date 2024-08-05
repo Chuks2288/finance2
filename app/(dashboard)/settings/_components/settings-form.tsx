@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/button";
 import { createStripeUrl } from "@/actions/stripe/user-subscription";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { PlaidLink } from "./plaid-link";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { User } from "@prisma/client";
 
 type Props = {
     isPro: boolean;
@@ -19,6 +22,8 @@ export const SettingsForm = ({
 }: Props) => {
 
     const { mutate: onUpgrade, isPending } = useCreateStripeUrl();
+
+    const user = useCurrentUser();
 
     return (
         <main className="mx-4 pb-20">
@@ -34,15 +39,11 @@ export const SettingsForm = ({
                     <h4 className="-ml-10">
                         Bank account Not connected
                     </h4>
-                    <Button
-                        className={cn(
-                            "border-2 rounded-sm bg-rose-500 hover:bg-red-400 focus:bg-rose-400",
-                            // isPro && "border-2 rounded-sm bg-green-500 hover:bg-green-400 focus:bg-green-400"
-                        )}
+                    <PlaidLink
                         disabled={isPending}
-                    >
-                        Connect
-                    </Button>
+                        user={user as User}
+                        isPro={isPro}
+                    />
                 </div>
                 <Separator />
                 <div className="flex items-center justify-between font-medium text-md">

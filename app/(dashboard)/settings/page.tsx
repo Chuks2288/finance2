@@ -11,6 +11,7 @@ const SettingsPage = async () => {
 
     return (
         <>
+
             <SettingsForm
                 isPro={isPro}
             />
