@@ -6,6 +6,7 @@
 export const publicRoutes = [
     "/api/uploadthing",
     "/api/webhooks/stripe",
+    // "https://sandbox.plaid.com/link/token/create",
 ]
 
 /**

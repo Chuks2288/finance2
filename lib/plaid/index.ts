@@ -142,13 +142,15 @@
 //     }
 // }
 
+// "use server";
+
 import { User } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { Configuration, PlaidApi, Products, PlaidEnvironments, CountryCode } from "plaid";
-import { parseStringify } from "./utils"; // Updated to JSON.stringify
-import { db } from "./db";
+import { parseStringify } from "../utils";
+import { db } from "../db";
 
-const PLAID_ENV = process.env.PLAID_ENV || "development";
+const PLAID_ENV = process.env.PLAID_ENV || "sandbox";
 
 interface CreateBankAccountProps {
     userId: string,
@@ -216,8 +218,12 @@ const createBankAccount = async ({
 }
 
 export const exchangePublicToken = async ({
-    publicToken, user
-}: { publicToken: string, user: User }) => {
+    publicToken,
+    user
+}: {
+    publicToken: string,
+    user: User
+}) => {
     try {
         const response = await plaidClient.itemPublicTokenExchange({
             public_token: publicToken
