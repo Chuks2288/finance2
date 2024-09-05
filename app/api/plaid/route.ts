@@ -142,7 +142,9 @@
 //     }
 // }
 
-// "use server";
+
+
+"use server";
 
 import { User } from "@prisma/client";
 import { revalidatePath } from "next/cache";

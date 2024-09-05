@@ -27,7 +27,7 @@ export const PlaidLink = ({
     useEffect(() => {
         const getLinkToken = async () => {
             const data = await createLinkToken(user);
-            setToken(data?.linkToken);
+            setToken(data?.linkToken || "");
         }
 
         getLinkToken();
@@ -46,9 +46,6 @@ export const PlaidLink = ({
         onSuccess,
     }
 
-    console.log(config.token);
-    console.log(config.onSuccess);
-
     const { open, ready } = usePlaidLink(config);
 
     return (
@@ -58,7 +55,8 @@ export const PlaidLink = ({
                 className={cn(
                     "border-2 rounded-sm bg-rose-500 hover:bg-red-400 focus:bg-rose-400",
                 )}
-            // disabled={!ready}
+                // disabled={!ready}
+                disabled={disabled}
             >
                 Connect
             </Button>

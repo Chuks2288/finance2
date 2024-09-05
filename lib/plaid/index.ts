@@ -150,6 +150,8 @@ import { Configuration, PlaidApi, Products, PlaidEnvironments, CountryCode } fro
 import { parseStringify } from "../utils";
 import { db } from "../db";
 
+import { NextApiRequest, NextApiResponse } from 'next';
+
 const PLAID_ENV = process.env.PLAID_ENV || "sandbox";
 
 interface CreateBankAccountProps {
@@ -173,25 +175,54 @@ const configuration = new Configuration({
 
 export const plaidClient = new PlaidApi(configuration);
 
-export const createLinkToken = async (user: User) => {
-    try {
-        const tokenParams = {
-            user: {
-                client_user_id: user.id,
-            },
-            client_name: user.name ?? "",
-            products: ["auth"] as Products[],
-            language: "en",
-            country_codes: ["US"] as CountryCode[],
+// export const createLinkToken = async (user: User) => {
+//     try {
+//         const tokenParams = {
+//             user: {
+//                 client_user_id: user.id,
+//             },
+//             client_name: user.name ?? "",
+//             products: ["auth"] as Products[],
+//             language: "en",
+//             country_codes: ["US"] as CountryCode[],
+//         }
+
+//         const response = await plaidClient.linkTokenCreate(tokenParams);
+
+//         return parseStringify({ linkToken: response.data.link_token });
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+// On the backend (e.g., in an API route)
+
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method === 'POST') {
+        try {
+            const tokenParams = {
+                user: {
+                    client_user_id: req.body.userId,
+                },
+                client_name: req.body.clientName,
+                products: ["auth"] as Products[],
+                language: "en",
+                country_codes: ["US"] as CountryCode[],
+            };
+
+            const response = await plaidClient.linkTokenCreate(tokenParams);
+            res.status(200).json({ linkToken: response.data.link_token });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ error: 'Failed to create link token' });
         }
-
-        const response = await plaidClient.linkTokenCreate(tokenParams);
-
-        return parseStringify({ linkToken: response.data.link_token });
-    } catch (error) {
-        console.log(error);
+    } else {
+        res.setHeader('Allow', ['POST']);
+        res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }
+
 
 const createBankAccount = async ({
     userId,
